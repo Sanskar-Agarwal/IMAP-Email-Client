@@ -15,7 +15,7 @@ This project is an IMAP email client written in C. It connects to an IMAP server
 - `LIST [folder_name]`: List all emails in a specified folder.
 
 ## Usage
-1. Compile the program using `make`: and clean using `make clean`:
+1. Compile the program using `make`: to make an executable <i>fetchmail</i> and clean using `make clean`:
    ```sh
    make
    
@@ -25,6 +25,8 @@ This project is an IMAP email client written in C. It connects to an IMAP server
 
 ## Run
 ```sh
-./imap_client <server> <port> <username> <password> <command> <folder/message_number>
+./fetchmail
+-u <username> -p <password> [-f <folder>] [-n <messageNum>] [-t] <command> <server_name>
+Where <command> may be one of: retrieve, parse, mime, or list.
 
 
