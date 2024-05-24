@@ -1,0 +1,69 @@
+Add dev notes here
+
+Task 2.1 - CLI Arguments Safety Checks
+First check: see if a minimum of 7 arguments have been entered
+fetchmail -u <username> -p <password> <command> <server_name>
+
+Second Check: see if any of the required commands(<username>  <password> <command> <server_name>) were not entered
+
+Third Check: See proper message format
+
+strspn(argv[i+1], "0123456789")!=strlen(argv[i+1]) = Ensures only numbers are put into argument, strlen() gaurd further ensures no charecters, decimals or -ve sign can be added to input
+
+message flag is set to one if we provide optional message to command line, we enter a check to see if message has been provided, it is not 0 or greater tha 1000(ie too many messages)
+
+Fourth Check: Injection attack on CI via username/password
+ Login command edditted to prevent injection attack and ensure only strings passed in without injection attacks
+ snprintf(buffer, sizeof(buffer), "A01 LOGIN \"%s\" \"%s\"\r\n", username, password);
+
+
+Task 2.2 - Login
+
+Uses code from practical, use hints.ai_family = AF_UNSPEC as we want both ipv4 and ipv6 supported
+
+Other code logic is from practical 8, RFC document login command and ed512 message in out.
+
+
+
+Task 2.3 
+Use FETCH BODY.PEEK[]
+
+Checks first line for byte size or error codes
+
+Prints message if first line is byte size
+
+
+
+
+Task 2.4 - parse
+Use FETCH BODY.PEEK[]
+
+strncasecmp - case sensitive check on each line to see if it starts with a From: ,Subject: ,To: or Date:
+
+Folding logic: check line has tab or space , in which case realloc previous line and fold it
+
+Print out parsed headers
+
+
+Task 2.5 - mime
+
+Use FETCH  BODY.PEEK[]
+
+use strlwr and strstr to find boundaries/parameters
+
+Folding logic: check line has tab or space , in which case append to lastline. lastline is cleared if new line isnt folded
+
+use a numbered flag to keep track of status
+
+
+
+Task 2.6 - List
+
+Logic re-used from parse mostly, FETCH A04 FETCH 1:* (BODY[HEADER.FIELDS (SUBJECT)])\r\n" to fetch all messages in the inbox with exit if no mail in mailbox.
+
+use two variables email_count to count emails and subject_count to count subject headers found.
+
+If we find the end of an email and the subject count is less than email count, it means we have an email with no subject, so we print email_count : < No subject>.
+
+folding and finding logic is re-used from 2.4
+
